@@ -8,9 +8,9 @@ $tenant_id = Get-AzKeyVaultSecret -VaultName "AutomationKeyVaul" -Name "TenantId
 $uri = "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/token" 
 $restbody = @{
          grant_type    	= 'client_credentials'
-         client_id     		= $applicationID 
+         client_id     	= $applicationID 
          client_secret 	= $clientKey
-         scope				= "https://graph.microsoft.com/.default"
+         scope		= "https://graph.microsoft.com/.default"
 }
 
 $tokenRequest = Invoke-WebRequest -Method Post -Uri $uri -ContentType "application/x-www-form-urlencoded" -Body $restbody -UseBasicParsing
