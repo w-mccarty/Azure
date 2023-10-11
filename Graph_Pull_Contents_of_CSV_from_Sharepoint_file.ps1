@@ -21,25 +21,28 @@ $headers = @{Authorization = "Bearer $token"}
 $sitenam = "Communication Site"
 $drivename = "Documents"
 $filename = "test.csv"
-#
+
 #find site id
 $GraphUri = 'https://graph.microsoft.com/v1.0/sites/?$select=id,displayName'
 [array]$GraphDatas = (Get-GraphData -Uri $GraphUri -AccessToken $Token)
 $siteId = $GraphDatas | where {$_.displayName -eq $sitenam}
 $siteId = ($siteId.id).split(",")
 $siteId[1] 
+
 #find drive id
 $GraphUri = "https://graph.microsoft.com/v1.0/sites/$($siteId[1])/drives/"
 [array]$GraphDatas = (Get-GraphData -Uri $GraphUri -AccessToken $Token)
 $driveId = $GraphDatas | where {$_.name -eq $drivename}
 $driveId = ($driveId.id)
 $driveId 
+
 #find file id
 $GraphUri = "https://graph.microsoft.com/v1.0/sites/$($siteId[1])/drives/$($driveId)/root/children"
 [array]$GraphDatas = (Get-GraphData -Uri $GraphUri -AccessToken $Token)
 $fileId = $GraphDatas | where {$_.name -eq $filename}
 $fileId = ($fileId.id)
 $fileId
+
 #get file contents
 $GraphUri = "https://graph.microsoft.com/v1.0/sites/$($siteId[1])/drives/$($driveId)/items/$($fileId)/content"
 [array]$FileData = (Get-GraphData -Uri $GraphUri -AccessToken $Token) | ConvertFrom-Csv
